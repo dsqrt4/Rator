@@ -1,0 +1,8 @@
+# vcs
+.git/
+.gitignore
+# idea
+.idea/
+# dotnet
+bin/
+obj/
