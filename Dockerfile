@@ -4,16 +4,15 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["RatorServer/RatorServer.csproj", "RatorServer/"]
-RUN dotnet restore "RatorServer/RatorServer.csproj"
+COPY ["Rator.csproj", "Rator.csproj"]
+RUN dotnet restore "Rator.csproj"
 COPY . .
-WORKDIR "/src/RatorServer"
-RUN dotnet build "RatorServer.csproj" -c Release -o /app/build
+RUN dotnet build "Rator.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "RatorServer.csproj" -c Release -o /app/publish
+RUN dotnet publish "Rator.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RatorServer.dll"]
+ENTRYPOINT ["dotnet", "Rator.dll"]
