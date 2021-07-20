@@ -15,6 +15,9 @@ Also I was caught in a really bad crunch at work and I was sick during the last 
 No, absolutely. Don`t use or even look at it.
 But while it is kind of a disgrace, developing this app has actually taught me a lot and I will definitely revisit this topic as well as the dotnet platform and Blazor.
 
-## So?
+
+# Acknowledgements
 Thanks to DigitalOcean for hosting this Hackathon hnd providing the credits to try out app platform and your managed mongo db services.
 If I would have had more time I would have tried and done more things. I'll try to progress this soon and follow  up with some proper docs and blog posts if I can.
+
+Thanks to my Partner in Crime for providing the 🔥 css style for my buttons last minute.

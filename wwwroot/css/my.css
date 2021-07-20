@@ -1,0 +1,12 @@
+.myaddbtn{
+    background-image: linear-gradient(white, royalblue);
+}
+.mycplbtn{
+    background-image: linear-gradient(white, limegreen);
+}
+.mydelbtn{
+    background-image: linear-gradient(white, indianred);
+}
+.myuplbtn{
+    background-image: linear-gradient(white, turquoise);
+}

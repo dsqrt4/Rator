@@ -4,8 +4,8 @@
 
 <h3>To-Do List</h3>
 
-<div class="input-group mb-3">
-    <button @onclick="() => Create()" class="btn btn-outline-secondary" type="button" id="button-addon1">add</button>
+<div class="input-group">
+    <button @onclick="() => Create()" class="btn btn-outline-secondary myaddbtn" type="button" id="button-addon1">add</button>
     <input @bind="NewTodoTitle" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 </div>
 
@@ -13,8 +13,8 @@
 @foreach (var toDo in openToDos)
 {
     <div class="input-group">
-        <button @onclick="() => Delete(toDo)" class="btn btn-outline-secondary" type="button">delete</button>
-        <button @onclick="() => Complete(toDo)" class="btn btn-outline-secondary" type="button">complete</button>
+        <button @onclick="() => Complete(toDo)" class="btn btn-outline-secondary mycplbtn" type="button">complete</button>
+        <button @onclick="() => Delete(toDo)" class="btn btn-outline-secondary mydelbtn" type="button">delete</button>
         <input  @onchange="(args => Up(toDo, args.Value as string))" type="text" class="form-control" placeholder="Title" value="@toDo.Title">
     </div>
 }
@@ -23,8 +23,8 @@
 @foreach (var toDo in completedToDos)
 {
     <div class="input-group">
-        <button @onclick="() => Delete(toDo)" class="btn btn-outline-secondary" type="button">delete</button>
-        <button @onclick="() => Reopen(toDo)" class="btn btn-outline-secondary" type="button">un-complete</button>
+        <button @onclick="() => Reopen(toDo)" class="btn btn-outline-secondary myuplbtn" type="button">un-complete</button>
+        <button @onclick="() => Delete(toDo)" class="btn btn-outline-secondary mydelbtn" type="button">delete</button>
         <input  @onchange="(args => Up(toDo, args.Value as string))" type="text" class="form-control" placeholder="Title" value="@toDo.Title">
     </div>
 }
