@@ -1,0 +1,72 @@
+@page "/todos"
+@using Rator.Data
+@inject ToDoService _toDoService
+
+<h3>To-Do List</h3>
+
+<div class="input-group mb-3">
+    <button @onclick="() => Create()" class="btn btn-outline-secondary" type="button" id="button-addon1">add</button>
+    <input @bind="NewTodoTitle" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+</div>
+
+<hr/>
+@foreach (var toDo in openToDos)
+{
+    <div class="input-group">
+        <button @onclick="() => Delete(toDo)" class="btn btn-outline-secondary" type="button">delete</button>
+        <button @onclick="() => Complete(toDo)" class="btn btn-outline-secondary" type="button">complete</button>
+        <input  @onchange="(args => Up(toDo, args.Value as string))" type="text" class="form-control" placeholder="Title" value="@toDo.Title">
+    </div>
+}
+
+<hr/>
+@foreach (var toDo in completedToDos)
+{
+    <div class="input-group">
+        <button @onclick="() => Delete(toDo)" class="btn btn-outline-secondary" type="button">delete</button>
+        <button @onclick="() => Reopen(toDo)" class="btn btn-outline-secondary" type="button">un-complete</button>
+        <input  @onchange="(args => Up(toDo, args.Value as string))" type="text" class="form-control" placeholder="Title" value="@toDo.Title">
+    </div>
+}
+
+@code {
+
+    private string NewTodoTitle = "";
+
+    private List<ToDo> toDos => _toDoService.Get();
+
+    private IEnumerable<ToDo> openToDos => toDos.Where(toDo => !toDo.IsDone);
+
+    private IEnumerable<ToDo> completedToDos => toDos.Where(toDo => toDo.IsDone);
+
+    private void Up(ToDo toDo, string? newTitle)
+    {
+        Console.WriteLine($">> UP {newTitle}");
+        toDo.Title = newTitle ?? "";
+     _toDoService.Update(toDo.Id, toDo);   
+    }
+    
+    private void Create()
+    {
+        _toDoService.Create(new() {Title = NewTodoTitle});
+        NewTodoTitle = "";
+    }
+
+    private void Complete(ToDo toDo)
+    {
+        toDo.IsDone = true;
+        _toDoService.Update(toDo.Id, toDo);
+    }
+
+    private void Reopen(ToDo toDo)
+    {
+        toDo.IsDone = false;
+        _toDoService.Update(toDo.Id, toDo);
+    }
+
+    private void Delete(ToDo toDo)
+    {
+        _toDoService.Remove(toDo);
+    }
+
+}

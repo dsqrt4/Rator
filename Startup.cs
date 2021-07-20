@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Rator.Data;
 
 namespace Rator
@@ -25,6 +26,14 @@ namespace Rator
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<RatorDatabaseSettings>(
+                Configuration.GetSection(nameof(RatorDatabaseSettings)));
+            
+            services.AddSingleton<IRatorDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<RatorDatabaseSettings>>().Value);
+
+            services.AddSingleton<ToDoService>();
+            
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
