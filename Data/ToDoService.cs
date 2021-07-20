@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using MongoDB.Driver;
@@ -10,13 +11,24 @@ namespace Rator.Data
     {
         private readonly IMongoCollection<ToDo> _ratings;
 
-        public ToDoService(IRatorDatabaseSettings settings)
+        public ToDoService(IRatorDatabaseSettings _settings)
         {
-            var client = new MongoClient(System.Environment.GetEnvironmentVariable("DATABASE_URL"));
-            client.Settings.SslSettings.CheckCertificateRevocation = false;
+            var cacert=new X509Certificate(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("CA_CERT")));
+            
+            var settings = MongoClientSettings.FromConnectionString(Environment.GetEnvironmentVariable("DATABASE_URL"));
+            settings.SslSettings.CheckCertificateRevocation = false;
+            settings.AllowInsecureTls = false;
+            settings.SslSettings.ServerCertificateValidationCallback =
+                (sender, certificate, chain, errors) => certificate.Issuer.Equals(cacert.Issuer);
 
+            var client = new MongoClient(settings);
+            
             var database = client.GetDatabase("admin");
             _ratings = database.GetCollection<ToDo>("ToDos");
+            
+            Console.WriteLine(">>>");
+            Console.WriteLine(Get());
+            Console.WriteLine("<<<");
         }
 
         public List<ToDo> Get() =>
